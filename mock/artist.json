@@ -1,0 +1,17 @@
+[
+    {
+        "firstname": "Matthew",
+        "surname": "Sanders",
+        "pfp": "https://img.freepik.com/fotos-gratis/desenho-de-yeti-roxo-sentado-na-cadeira_23-2150248735.jpg?t=st=1745077378~exp=1745080978~hmac=442b194ab4382fafa801d3330cf43df1c681503760693ad9f5dd7acef0af7562&w=996"
+    },
+    {
+        "firstname": "Sandra",
+        "surname": "Smith",
+        "pfp": "https://img.freepik.com/fotos-gratis/uma-jovem-esta-pintando-um-quadro-em-uma-tela-enquanto-esta-sentado_169016-18765.jpg?t=st=1745077999~exp=1745081599~hmac=383f671bf05bfef082bec3770d7eee7ab44eeb6c86224c9fdbb436fc02abffb2&w=996"
+    },
+    {
+        "firstname": "Amy",
+        "surname": "Porter",
+        "pfp": "https://img.freepik.com/fotos-gratis/jovem-garota-de-cabelos-rosa-segurando-um-caderno-e-olhando-para_114579-19337.jpg?t=st=1745078100~exp=1745081700~hmac=9605b4e56f23114a9d20ed905352878c5f24e62fec35b5d4e9ad93e679166645&w=996"
+    }
+]
