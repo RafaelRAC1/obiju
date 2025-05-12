@@ -1,5 +1,6 @@
-import React from 'react'
-import { TextInput, StyleSheet } from 'react-native'
+import React, { useState } from 'react';
+import { View, TextInput, Button, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 const styles = StyleSheet.create({
     inputs: {
@@ -8,13 +9,50 @@ const styles = StyleSheet.create({
     }
 });
 
-const InputField = ({ placeholder, secureTextEntry, inputWidth = '100%' }) => {
+const InputField = ({ placeholder, secureTextEntry, inputWidth = '100%', value = "", onChangeText = () => { }, date = false }) => {
+    const [show, setShow] = useState(false);
+    const [lclDate, setDate] = useState(null);
     return (
-        <TextInput
-            style={[styles.inputs, {width: inputWidth}]}
-            placeholder={placeholder}
-            secureTextEntry={secureTextEntry}
-        />
+        <View style={{ width: inputWidth }}>
+            {date != true ?
+                (
+                    <TextInput
+                        style={[styles.inputs]}
+                        placeholder={placeholder}
+                        secureTextEntry={secureTextEntry}
+                        value={value}
+                        onChangeText={onChangeText}
+                    />
+                )
+                :
+                (
+                    <View>
+                        <TouchableOpacity onPress={() => setShow(true)}>
+                            <TextInput
+                                style={[styles.inputs]}
+                                placeholder={placeholder}
+                                value={lclDate ? lclDate.toLocaleDateString('pt-BR') : ""}
+                                editable={false}
+                            />
+                        </TouchableOpacity>
+
+                        {show && (
+                            <DateTimePicker
+                                value={lclDate ?? new Date()}
+                                mode="date"
+                                display="default"
+                                onChange={(event, selectedDate) => {
+                                    setShow(false);
+                                    if (selectedDate) {
+                                        setDate(selectedDate);
+                                        onChangeText(selectedDate); 
+                                    }
+                                }}
+                            />
+                        )}
+                    </View>
+                )}
+        </View>
     )
 }
 
