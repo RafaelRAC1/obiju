@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Image, StyleSheet, View, Text, Platform } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import InputField from '../components/InputField';
@@ -75,6 +75,51 @@ const styles = StyleSheet.create({
 });
 
 const LoginScreen = ({ navigation }) => {
+    const [name, setName] = useState('');
+    const [surname, setSurname] = useState('');
+    const [phone, setPhone] = useState('');
+    const [birthDate, setBirthDate] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleSubmit = async () => {
+        try {
+            const requestData = {
+                firstName: name,
+                lastName: surname,
+                birthDate: birthDate.toISOString().split('T')[0],
+                email: email,
+                phone: phone,
+                password: password,
+                profilePicture: "https://static.vecteezy.com/system/resources/previews/009/292/244/non_2x/default-avatar-icon-of-social-media-user-vector.jpg"
+            };
+
+            const response = await fetch('http://host:8080/api/creators', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                },
+                body: JSON.stringify(requestData)
+            });
+
+            console.log('Response status:', response.status); // Debug log
+
+            
+            const responseData = await response.json().catch(e => ({}));
+            console.log('Response data:', responseData); // Debug log
+
+            if (!response.ok) {
+                throw new Error(responseData.message || `Error ${response.status}: ${response.statusText}`);
+            } else {
+                navigation.goBack()
+            }
+             
+        } catch (error) {
+            //todo
+        }
+    }
+
     return (
         <SafeAreaProvider>
             <SafeAreaView style={styles.mainContainer}>
@@ -100,16 +145,16 @@ const LoginScreen = ({ navigation }) => {
                         </View>
                         <View style={styles.inputContainer}>
                             <View style={styles.inputGroup}>
-                                <InputField placeholder="Nome" inputWidth='47%' />
-                                <InputField placeholder="Sobrenome" inputWidth='47%' />
+                                <InputField placeholder="Nome" inputWidth='47%' value={name} onChangeText={setName} />
+                                <InputField placeholder="Sobrenome" inputWidth='47%' value={surname} onChangeText={setSurname} />
                             </View>
                             <View style={styles.inputGroup}>
-                                <InputField placeholder="Telefone" inputWidth='47%' />
-                                <InputField placeholder="Data Nasc." inputWidth='47%' />
+                                <InputField placeholder="Telefone" inputWidth='47%' value={phone} onChangeText={setPhone} />
+                                <InputField placeholder="Data Nasc." inputWidth='47%' value={birthDate} onChangeText={setBirthDate} date={true}/>
                             </View>
-                            <InputField placeholder="E-mail" />
-                            <InputField placeholder="Senha" secureTextEntry={true} />
-                            <InputField placeholder="Confirmar Senha" secureTextEntry={true} />
+                            <InputField placeholder="E-mail" value={email} onChangeText={setEmail} />
+                            <InputField placeholder="Senha" secureTextEntry={true} value={password} onChangeText={setPassword} />
+                            <InputField placeholder="Confirmar Senha" secureTextEntry={true} value={password} onChangeText={setPassword} />
                         </View>
                         <View style={styles.formEndContainer}>
                             <IconButton
@@ -117,6 +162,7 @@ const LoginScreen = ({ navigation }) => {
                                 iconColor='rgba(0, 0, 0, 0.6)'
                                 size={20}
                                 backgroundColor='#C9C9C9'
+                                onPress={handleSubmit}
                             />
                         </View>
                     </View>
@@ -132,6 +178,8 @@ const LoginScreen = ({ navigation }) => {
             </SafeAreaView>
         </SafeAreaProvider>
     )
-}
+};
+
+
 
 export default LoginScreen;
